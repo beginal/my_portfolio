@@ -8,7 +8,7 @@ const loginForm = () => {
   const [ id, onChangeId ] = useInput('');
   const [ password, onChangePassword ] = useInput('');
 
-  const { isLoggingIn } = (state => state.user)
+  const { isLoggingIn } = useSelector(state => state.user)
 
   const dispatch = useDispatch();
 
@@ -16,7 +16,8 @@ const loginForm = () => {
     dispatch({
       type:LOG_IN_REQUEST,
       data: {
-        id, password
+        userId: id, 
+        password
       }
     })
   }, [id,password])

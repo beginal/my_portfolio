@@ -1,18 +1,21 @@
 const express = require('express');
-const db = require('./models');
 const morgan = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const expressSession = require('express-session')
-const dotenv = require('dotenv')
+const expressSession = require('express-session');
+const dotenv = require('dotenv');
+const passport = require('passport');
 
+const db = require('./models');
+const passportConfig = require('./passport');
 const userAPIRouter = require('./routes/user');
 const postAPIRouter = require('./routes/post');
 const postsAPIRouter = require('./routes/posts');
 
 const app = express();
 db.sequelize.sync();
-dotenv.config()
+dotenv.config();
+passportConfig();
 
 app.use(cors());
 app.use(morgan('dev'))
@@ -29,6 +32,9 @@ app.use(expressSession({
 
   }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/api/user', userAPIRouter);
 app.use('/api/post', postAPIRouter);

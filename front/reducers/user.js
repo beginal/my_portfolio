@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
     case LOG_IN_SUCCESS: {
       return {
         ...state,
-        me: dummyUser,
+        me: action.data,
         isLoggingIn: false,
         toggleLoggedIn: false,
       }
