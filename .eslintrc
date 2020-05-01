@@ -11,12 +11,15 @@
     "node" : true
   },
   "extends" : [
-    "eslint: recommended",
-    "plugin:react/recommended"
+    "aribnb"
   ],
   "plugins": [
     "import",
     "react-hooks"
-  ]
+  ],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "react/forbid-prop-types": "off"
+  }
 }
 // npm i -D eslint eslint-plugin-import  eslint-plugin-react eslint-plugin-react-hooks
