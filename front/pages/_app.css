@@ -1,0 +1,108 @@
+.loginComponent {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 150px;
+    vertical-align: middle;
+  background-color: ghostwhite;
+}
+
+.mainPost {
+  margin: 10px 0;
+}
+
+.signupPage {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: 1000px;
+  background-color: ghostwhite;
+}
+.searchInput {
+  padding-left: 15px;
+  padding-right: 15px;
+  height: 33px;
+  width: 300px;
+  border: 1px solid #dfe1e5;
+  border-radius: 5px;
+  color:black;
+  vertical-align:middle;
+
+}
+.searchInput::placeholder {
+  font-size: 14px;  
+  font-weight: bold;
+  color:rgba(0,0,0,0.40);
+}
+.topBar {
+  display: flex;
+  justify-content: space-between;
+}
+.signupForm > h1 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.loginForm {
+  padding : 10px;
+  width: 200px;
+}
+.signupForm {
+  padding : 10px;
+  width: 400px;
+}
+.loginForm Input {
+  width: 200px;
+  height: 33px;
+  font-size: 13px;
+  margin: 5px;
+}
+.signupForm  Input {
+  width: 400px;
+  height: 50px;
+  font-size: 15px;
+}
+.loginForm Input::placeholder {
+  font-size: 13px;
+  font-weight: bold;
+  color:rgba(0,0,0,0.40);
+}
+.signupForm Input::placeholder {
+  font-size: 15px;
+  font-weight: bold;
+  color:rgba(0,0,0,0.40);
+}
+.loginForm Input,
+.signupForm > div {
+  padding-bottom: 8px;
+}
+
+.signupError {
+  color: red;
+  margin: 0 5px;
+  font-size: 10px; 
+}
+
+.submitBtn {
+  margin-top:10px;
+  width: 400px;
+  height: 50px;
+  background-color: #3366cf;
+  border-radius: 7px;
+  color: white;
+  font-size:15px;
+  font-weight: bold;
+}
+
+.loginBtn {
+  width: 200px;
+  height:35px;
+  margin: 5px;
+  background-color: #3366cf;
+  font-weight: bold;
+  border-radius: 3px;
+  color: white;
+
+}
