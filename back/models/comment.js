@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     collate: 'utf8mb4_general_ci'
   });
   Comment.associate = (db) => {
-    db.Comment.BelongsTo(db.Post);
-    db.Comment.BelongsTo(db.User)
+    db.Comment.belongsTo(db.Post);
+    db.Comment.belongsTo(db.User)
   }
   return Comment;
 }

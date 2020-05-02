@@ -32,7 +32,7 @@ const PostCard = ({ post }) => {
         postId: post.id,
       }
     })
-  }, [me&& me.id])
+  }, [me?.id])
 
   useEffect(() => {
     setCommentText('');

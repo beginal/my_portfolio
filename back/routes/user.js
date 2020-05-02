@@ -6,7 +6,12 @@ const router = express.Router();
 const db = require('../models')
 
 router.get('/', (req,res) => {
-  
+  if (!req.user) {
+    return res.status(401).send('로그인이 필요합니다.');
+  }
+  const user = Object.assign({}, req.user.toJSON());
+  delete user.password;
+  return res.json(user);
 });
 router.post('/', async (req,res) => {
   try {
@@ -16,7 +21,7 @@ router.post('/', async (req,res) => {
       },
     })
     if(exuser) {
-      return res.status(400).send('이미 사용중인 아이디입니다.');
+      return res.status(403).send('이미 사용중인 아이디입니다.');
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     const newUser = await db.User.create({
@@ -40,24 +45,34 @@ req.logout();
 req.session.destroy();
 res.send('logout 성공')
 })
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    console.log(err, user, info)
     if(err) {
       console.error(e)
-      next(err)
+      return next(err)
     }
     if(info) {
       return res.status(401).send(info.reason); 
     }
-    return req.login(user, (loginErr) => {
-      if(loginErr) {
+    return req.login(user, async (loginErr) => {
+      try {
+        if(loginErr) {
         return next(loginErr);
       }
-      console.log('req.user',req.user)
-      const filteredUser = Object.assign({}, user.toJSON());
-      delete filteredUser.password;
-      return res.json(filteredUser)
+      const fullUser = await db.User.findOne({
+        where: { id: user.id },
+        include: [{
+          model: db.Post,
+          attributes: ['id']
+        }],
+        attributes: ['id', 'nickname', 'userId']
+      })
+      console.log(fullUser)
+      return res.json(fullUser)
+      } catch (e) {
+        next(e)
+      }      
     })
   })(req, res, next)
 })

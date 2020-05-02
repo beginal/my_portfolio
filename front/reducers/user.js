@@ -12,6 +12,7 @@ export const initialState = {
   signingIn: false, // 회원가입 성공
   isSigningUp: false, // 회원가입 시도중
   signupErrorReason: '', // 회원가입 실패 사유
+  isLoggingOut: false,
   userInfo: { // 남의 정보
     nickname: '준호',
     post: 4,
@@ -25,10 +26,19 @@ export const initialState = {
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
-export const LOG_OUT = 'LOG_OUT';
+
+export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
+
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
 export const TOGGLE_LOG_IN = 'TOGGLE_LOG_IN';
 
 export default (state = initialState, action) => {
@@ -62,10 +72,34 @@ export default (state = initialState, action) => {
         loginErrorReason: action.error
       }
     }
-    case LOG_OUT: {
+    case LOG_OUT_REQUEST: {
       return {
         ...state,
-        me: false,
+        isLoggingOut: true,
+      }
+    }
+    case LOG_OUT_SUCCESS: {
+      return {
+        ...state,
+        isLoggingOut: false,
+        me: null,
+      }
+    }
+    case LOAD_USER_REQUEST: {
+      return {
+        ...state,
+        
+      }
+    }
+    case LOAD_USER_SUCCESS: {
+      return {
+        ...state,
+        me:action.data,
+      }
+    }
+    case LOAD_USER_FAILURE: {
+      return {
+        ...state
       }
     }
     case SIGN_UP_REQUEST: {

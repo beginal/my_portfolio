@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
-import { Menu, Input, Button, Avatar,Row, Col } from 'antd';
+import { Menu, Row, Col } from 'antd';
 import LoginForm from './LoginForm';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { TOGGLE_LOG_IN, LOG_OUT } from '../reducers/user';
+import { 
+  TOGGLE_LOG_IN, 
+  LOG_OUT_REQUEST,
+  LOAD_USER_REQUEST,
+} from '../reducers/user';
 
 const AppLayout = ({ children }) => {
 
-  const { me, userInfo, toggleLoggedIn } = useSelector(state => state.user);
+  const { me, toggleLoggedIn } = useSelector(state => state.user);
   const { SubMenu } = Menu;
 
   const [toggleSearch, setToggleSearch] = useState(true);
   const [toggleLogin, setToggleLogin] = useState(toggleLoggedIn);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!me) {
+      dispatch({
+        type:LOAD_USER_REQUEST,
+      })
+    }
+  }, [me])
 
   const onToggleSearch = () => {
     setToggleSearch(!toggleSearch)
@@ -29,7 +41,7 @@ const AppLayout = ({ children }) => {
 
   const onLogOut = () => {
     dispatch({
-      type: LOG_OUT,
+      type: LOG_OUT_REQUEST,
     })
   }
   
