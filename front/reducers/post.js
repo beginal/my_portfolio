@@ -1,14 +1,5 @@
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: 'admin',
-    },
-    content: '내용',
-    img: 'https://cafe-1393d.kxcdn.com/wp-content/uploads/2020/04/MCS_0828_R1-1229x1536.jpeg',
-    comments: [],
-  }],
+  mainPosts: [],
   imagePath: [],
   postAdded: false,
   isAddingPost: false,
@@ -42,6 +33,10 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGE_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST'; 
+export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'; 
+export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE'; 
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -88,15 +83,16 @@ export default (state = initialState, action) => {
     case ADD_COMMENT_SUCCESS: {
       const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
       const post = state.mainPosts[postIndex];
-      const comments = [...post.comments, dummyComment];
-      const mainPosts = [...state.mainPosts]
-      mainPosts[postIndex] = { ...post, comments }
+      const Comments = [...post.Comments, action.data.comment];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Comments };
+      console.log('mainPosts', mainPosts)
       return {
         ...state,
         isAddingComment: false,
         mainPosts,
         commentAdded: true,
-      }
+      };
     }
     case ADD_COMMENT_FAILURE: {
       return {
@@ -104,6 +100,17 @@ export default (state = initialState, action) => {
         isAddingComment: false,
         addCommentErrorReason: action.error,
       }
+    }
+    case LOAD_COMMENTS_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+      const post = state.mainPosts[postIndex];
+      const Comments = action.data.comments;
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = { ...post, Comments };
+      return {
+        ...state,
+        mainPosts,
+      };
     }
     case LOAD_MAIN_POSTS_FAILURE:
     case LOAD_HASHTAG_POSTS_REQUEST: 
