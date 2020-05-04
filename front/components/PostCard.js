@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Card, Avatar, Input, Form, Button, List, Comment } from 'antd';
-import PropTypes from 'prop-types'
+import Link from 'next/link';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
@@ -37,7 +38,6 @@ const PostCard = ({ post }) => {
   useEffect(() => {
     setCommentText('');
   }, [commentAdded === true]);
-
   return (
     <div className="mainPost">
         <Card
@@ -48,9 +48,28 @@ const PostCard = ({ post }) => {
           ]}
         >
           <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+            avatar={<Link 
+              href={{ pathname: '/user', query: { id: post.User.id}}}
+              as={`/user/${post.User.id}`}
+              ><a><Avatar>{post.User.nickname[0]}</Avatar></a></Link>}
             title={post.User.nickname}
-            description={post.content}
+            description={(
+            <div>
+              {post.content.split(/(#[^\s]+)/g).map((v) => {
+                if(v.match(/#[^\s]+/)) {
+                  return(
+                  <Link 
+                  href={{ pathname: '/hashtag', query: { tag: v.slice(1) }}}
+                  as={`/hashtag/${v.slice(1)}`}
+                  key={v}
+                  ><a>{v}</a>
+                  </Link>
+                  );
+                }
+                return v;
+              })}
+              </div>
+               )}
           />
         </Card>
         {commentFormOpened && (
@@ -63,7 +82,12 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment 
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={<Link 
+                  href={{ pathname: '/user',query: {id: item.User.id}}} 
+                  as={`/user/${item.User.id}`}
+                  ><a>
+                    <Avatar>{item.User.nickname[0]}</Avatar>
+                    </a></Link>}
                   content={item.content}
                 />
               </li>
@@ -81,6 +105,7 @@ const PostCard = ({ post }) => {
     </div>
   )
 }
+
 
 PostCard.propTypes = {
   post: PropTypes.shape({

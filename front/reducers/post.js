@@ -18,24 +18,6 @@ export const initialState = {
   addCommentErrorReason: '',
 }
 
-const dummyPost = {
-  id: 2,
-  User: {
-    id: 1,
-    nickname: '바보'
-  },
-  content: '더미입니다.',
-  comments: [],
-}
-
-const dummyComment = {
-  User: {
-    id: 2,
-    nickname: '용용'
-  },
-  content: '더미댓글입니다.',
-  createdAt: new Date(),
-}
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -48,6 +30,10 @@ export const LOAD_MAIN_POSTS_FAILURE = 'LOAD_MAIN_POST_FAILURE';
 export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POST_REQUEST';
 export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POST_SUCCESS';
 export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POST_FAILURE';
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POST_REQUEST'
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POST_SUCCESS'
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POST_FAILURE'
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGE_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGE_SUCCESS';
@@ -65,16 +51,6 @@ export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
 export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 
-export const addPost = {
-  type: ADD_POST_SUCCESS,
-  data: {
-    content: 'Hello',
-    UserId: 1,
-    User: {
-      nickname: 'jun',
-    },
-  },
-}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -129,19 +105,25 @@ export default (state = initialState, action) => {
         addCommentErrorReason: action.error,
       }
     }
-    case LOAD_MAIN_POSTS_REQUEST: {
+    case LOAD_MAIN_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_REQUEST: 
+    case LOAD_USER_POSTS_REQUEST:  {
       return {
         ...state,
         mainPosts: [],
       }
     }
-    case LOAD_MAIN_POSTS_SUCCESS: {
+    case LOAD_MAIN_POSTS_SUCCESS: 
+    case LOAD_HASHTAG_POSTS_SUCCESS: 
+    case LOAD_USER_POSTS_SUCCESS:  {
       return {
         ...state,
         mainPosts: action.data,
       }
     }
-    case LOAD_MAIN_POSTS_FAILURE: {
+    case LOAD_MAIN_POSTS_FAILURE: 
+    case LOAD_HASHTAG_POSTS_FAILURE: 
+    case LOAD_USER_POSTS_FAILURE:  {
       return {
         ...state,
       }

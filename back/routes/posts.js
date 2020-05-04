@@ -11,9 +11,8 @@ router.get('/', async(req, res, next) => {
       }],
       order: [['createdAt', 'DESC']],
     });
-    console.log('posts',posts)
     res.json(posts);
-  } catch (e) {
+  } catch (e) { 
     console.error(e);
     next(e);
   }

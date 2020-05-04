@@ -37,9 +37,25 @@ router.post('/', async (req,res) => {
   }
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res, next) => { // 남의 정보 가져오는 것 ex) /api/user/123
+  try {
+    const user = await db.User.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+      include: [{
+        model: db.Post,
+        attributes: ['id'],
+      }],
+      attributes: ['id', 'nickname'],
+    });
+    const jsonUser = user.toJSON();
+    jsonUser.Posts = jsonUser.Posts ? jsonUser.Posts.length : 0;
+    res.json(jsonUser);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 
-})
 router.post('/logout', (req, res) => {
 req.logout();
 req.session.destroy();
@@ -68,7 +84,6 @@ router.post('/login', (req, res, next) => {
         }],
         attributes: ['id', 'nickname', 'userId']
       })
-      console.log(fullUser)
       return res.json(fullUser)
       } catch (e) {
         next(e)
@@ -78,8 +93,24 @@ router.post('/login', (req, res, next) => {
 })
 
 
-router.get('/:id/posts', (req, res) => {
-  
-})
+router.get('/:id/posts', async (req, res) => {
+  try {
+    const posts = await db.Post.findAll({
+      where: {
+        UserId: parseInt(req.params.id, 10),
+      },
+      include: [{
+        model: db.User,
+        attributes: ['id', 'nickname'],
+      }, {
+        model: db.Image,
+      }],
+    });
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 
 module.exports = router;

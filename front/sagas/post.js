@@ -10,6 +10,12 @@ import {
   LOAD_MAIN_POSTS_REQUEST,
   LOAD_MAIN_POSTS_SUCCESS,
   LOAD_MAIN_POSTS_FAILURE,
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_SUCCESS,
+  LOAD_HASHTAG_POSTS_FAILURE,
+  LOAD_USER_POSTS_REQUEST,
+  LOAD_USER_POSTS_SUCCESS,
+  LOAD_USER_POSTS_FAILURE,
 } from '../reducers/post'
 
 function addpostAPI(postData) {
@@ -37,6 +43,8 @@ function* watchAddPost() {
   yield takeLatest( ADD_POST_REQUEST, addPost )
 }
 
+
+
 function loadmainpostAPI() {
   return axios.get('/posts')
 }
@@ -59,6 +67,54 @@ function* loadMainPosts() {
 
 function* watchLoadMainPosts() {
   yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts )
+}
+
+function loadhashtagpostsAPI(tag) {
+  return axios.get(`/hashtag/${tag}`)
+}
+
+function* loadHashtagPosts(action) {
+  try{
+    const result = yield call(loadhashtagpostsAPI, action.data)
+    yield put({
+      type: LOAD_HASHTAG_POSTS_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    console.error(e)
+    yield put({
+      type: LOAD_HASHTAG_POSTS_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchLoadHashtagPosts() {
+  yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts )
+}
+
+function loaduserpostsAPI(id) {
+  return axios.get(`/user/${id}/posts`)
+}
+
+function* loadUserPosts(action) {
+  try{
+    const result = yield call(loaduserpostsAPI, action.data)
+    yield put({
+      type: LOAD_USER_POSTS_SUCCESS,
+      data: result.data,
+    })
+  } catch (e) {
+    console.error(e)
+    yield put({
+      type: LOAD_USER_POSTS_FAILURE,
+      error: e,
+    })
+  }
+}
+
+function* watchLoadUserPosts() {
+  yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts )
 }
 
 function commentAPI() {
@@ -91,6 +147,8 @@ export default function* postSaga() {
   yield all ([
     fork(watchAddPost),
     fork(watchLoadMainPosts),
-    fork(watchAddComment)
+    fork(watchAddComment),
+    fork(watchLoadHashtagPosts),
+    fork(watchLoadUserPosts),
   ])
 }

@@ -1,9 +1,3 @@
-const dummyUser = {
-  nickname : '준호',
-  post: [],
-  id: 1,
-}
-
 export const initialState = {
   me: null, // 내  정보 / 로그인 여부
   isLoggingIn: false, // 로그인 시도중
@@ -13,10 +7,7 @@ export const initialState = {
   isSigningUp: false, // 회원가입 시도중
   signupErrorReason: '', // 회원가입 실패 사유
   isLoggingOut: false,
-  userInfo: { // 남의 정보
-    nickname: '준호',
-    post: 4,
-  },
+  userInfo: null,
   signUpdata: {
     id: '',
     nickname: '',
@@ -92,10 +83,16 @@ export default (state = initialState, action) => {
       }
     }
     case LOAD_USER_SUCCESS: {
+      if(action.me) {
+        return {
+        ...state,
+        me: action.data,
+      };
+      }
       return {
         ...state,
-        me:action.data,
-      }
+        userInfo: action.data,
+      }      
     }
     case LOAD_USER_FAILURE: {
       return {

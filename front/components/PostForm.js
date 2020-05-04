@@ -14,9 +14,12 @@ const PostForm = () => {
 
   useEffect(() => {
     setText('')
-  }, [postAdded === true])
+  }, [postAdded])
   
   const onSubmit = useCallback(() => {
+    if(!text?.trim()) {
+      return alert('게시글이 없습니다')
+    }
     dispatch({
       type: ADD_POST_REQUEST,
       data: {
